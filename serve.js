@@ -29,7 +29,7 @@ app.get('/webhook/', function(req, res) {
             console.log(text);
         }
     }
-    res.end('received!');
+    res.status(200).send(req.query['hub.challenge']);
 })
 
 // Spin up the server
