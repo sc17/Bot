@@ -34,14 +34,20 @@ app.post('/webhook/', function(req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            console.log(text);
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+
+            var msg = "https://recorridos-y-viajes-a6d8d.firebaseapp.com/"
+            msg += "\n Para pedir un servicio ingresa a esta url y registra tu servicio, "
+            msg += "\n La solicitud inmediatamente se tramita y se da respuesta."
+            msg += "\n Muchas Gracias por escribirnos."
+
+
+            sendTextMessage(sender, msg)
         }
     }
     res.sendStatus(200)
 })
 
-var token = "EAAX4AWm0Ew4BAJKZA21uyfHadY85RFPxwHysLWrYgyBBbH0Kg07nsnvidjpzrqIFtxY1iwJPKXiT3NS4mwRPpzlvN8DXJB8BQEaN2iRa9yOvCZB2MyT0tmqQ8zs8WE3e13jglg6b05mJc8AhkWHSu39V8c7jqZCZC8BBxTZBCRAZDZD"
+var token = "EAAX4AWm0Ew4BAJKZA21uyfHadY85RFPxwHysLWrYgyBBbH0Kg07nsnvidjpzrqIFtxY1iwJPKXiT3NS4mwRPpzlvN8DXJB8BQEaN2iRa9yOvCZB2MyT0tmqQ8zs8WE3e13jglg6b05mJc8AhkWHSu39V8c7jqZCZC8BBxTZBCRAZDZD";
 
 function sendTextMessage(sender, text) {
     messageData = {
