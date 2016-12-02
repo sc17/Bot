@@ -26,12 +26,21 @@ app.get('/webhook/', function(req, res) {
     res.send('Error, wrong token')
 })
 
+var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD";
+
 
 app.post('/webhook/', function(req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
+         console.log(event);
+        if (event.postback) {
+            text = JSON.stringify(event.postback)
+            sendTextMessage(sender, "Hola : "+text , token)
+            sendTextMessage(sender, " Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+        }
+        
         if (event.message && event.message.text) {
             text = event.message.text
 
@@ -46,8 +55,6 @@ app.post('/webhook/', function(req, res) {
     }
     res.sendStatus(200)
 })
-
-var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD";
 
 function sendTextMessage(sender, text) {
     messageData = {
@@ -64,6 +71,7 @@ function sendTextMessage(sender, text) {
                 id: sender
             },
             message: messageData,
+            notification_type: "REGULAR"
         }
     }, function(error, response, body) {
         if (error) {
