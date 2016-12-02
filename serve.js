@@ -68,26 +68,33 @@ function messages(sender,text){
     try{
 return new Promise(function(resolve,reject){
 
- request({
+messageData = {
+        text: text
+    }
+    request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
+        qs: {
+            access_token: token
+        },
         method: 'POST',
         json: {
-            recipient: {id:sender},
+            recipient: {
+                id: sender
+            },
             message: messageData,
+            notification_type: "REGULAR"
         }
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
-              reject('error');
+            reject("error");
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
-            reject('error');
+            reject("error");
         }else{
-            resolve('ok');
+            resolve("ok");
         }
     })
-
 })
 }catch(err){
     console.log(err);
