@@ -29,6 +29,7 @@ app.get('/webhook/', function(req, res) {
 var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD";
 
 
+
 app.post('/webhook/', function(req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
@@ -37,19 +38,16 @@ app.post('/webhook/', function(req, res) {
          console.log(event);
         if (event.postback) {
             text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Hola : "+text , token)
-            sendAction(sender)
-            sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
-            sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
-            sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
-            sendAction(sender)
-        }
+            //text.payload
+            }
         
         if (event.message && event.message.text) {
            sendAction(sender)
+               sendTextMessage(sender, "Hola. !!! ", token)
            sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+           sendLink();
            sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
-           sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
+           sendTextMessage(sender,"Muchas Gracias por escribirnos.\nQue tenga un buen día." , token)
            sendAction(sender)
         }
     }
@@ -82,7 +80,68 @@ function sendTextMessage(sender, text) {
     })
 }
 
+ function sendLink(){
 
+  messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Pedir servicio",
+                    "subtitle": "mensaje 1 ----- #",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "Abrir Página"
+                    }],
+                }, {
+                    "title": "Catálogo de Servicios",
+                    "subtitle": "mensaje 2 ----- #",
+                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "Abrir Página"
+                    }],
+                }, {
+                    "title": "Contáctanos",
+                    "subtitle": "mensaje 3 ----- #",
+                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "Abrir Página"
+                    }],
+                }]
+            }
+        }
+    }
+
+
+      request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: token
+        },
+        method: 'POST',
+        json: {
+            recipient: {
+                id: sender
+            },
+            sender_action : "typing_on",
+            notification_type: "REGULAR"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+
+ }
 
 function sendAction(sender) {
   
@@ -96,7 +155,7 @@ function sendAction(sender) {
             recipient: {
                 id: sender
             },
-            sender_action : "typing_on",
+            message: messageData,
             notification_type: "REGULAR"
         }
     }, function(error, response, body) {
