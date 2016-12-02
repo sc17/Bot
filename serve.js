@@ -38,15 +38,19 @@ app.post('/webhook/', function(req, res) {
         if (event.postback) {
             text = JSON.stringify(event.postback)
             sendTextMessage(sender, "Hola : "+text , token)
+            sendAction(sender)
             sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
             sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
             sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
+            sendAction(sender)
         }
         
         if (event.message && event.message.text) {
+           sendAction(sender)
            sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
            sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
            sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
+           sendAction(sender)
         }
     }
     res.sendStatus(200)
@@ -67,6 +71,32 @@ function sendTextMessage(sender, text) {
                 id: sender
             },
             message: messageData,
+            notification_type: "REGULAR"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+
+
+function sendAction(sender) {
+  
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: token
+        },
+        method: 'POST',
+        json: {
+            recipient: {
+                id: sender
+            },
+            sender_action : "typing_on",
             notification_type: "REGULAR"
         }
     }, function(error, response, body) {
