@@ -3,3 +3,16 @@
     "text":"Hola {{user_first_name}}, Bienvenido a Recorridos."
   }
 }' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"    
+
+
+Button--
+
+{
+  "setting_type":"call_to_actions",
+  "thread_state":"new_thread",
+  "call_to_actions":[
+    {
+      "payload":"{{user_first_name}}"
+    }
+  ]
+}
