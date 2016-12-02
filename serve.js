@@ -46,8 +46,7 @@ app.post('/webhook/', function(req, res) {
           sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para Solicitar nuestros servicios. ", token)
           sendAction(sender);
           sendLink(sender);
-          setTimeout(function a(){console.log("tiempo")},2000);
-           sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día.", token)
+         setTimeout(sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día.", token),2000)
         }
     }
     res.sendStatus(200)
