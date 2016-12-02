@@ -43,16 +43,13 @@ app.post('/webhook/', function(req, res) {
             }
         
         if (event.message && event.message.text) {
-            
-          sendAction(sender)
-          sendTextMessage(sender, "Hola. !!! ", token)
-          sendAction(sender)
-          delay(sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token))
-          sendLink(sender);
-          delay(sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token))
-          sendLink(sender);
-          delay( sendTextMessage(sender,"Muchas Gracias por escribirnos.\nQue tenga un buen día." , token))
- 
+           sendAction(sender)
+               sendTextMessage(sender, "Hola. !!! ", token)
+           sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+           sendLink(sender);
+           sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
+           sendTextMessage(sender,"Muchas Gracias por escribirnos.\nQue tenga un buen día." , token)
+           sendAction(sender)
         }
     }
     res.sendStatus(200)
@@ -165,9 +162,6 @@ function sendAction(sender) {
     })
 }
 
-function  delay(func) {
-    setTimeout(func, 2000);
-}
 
 
 // Spin up the server
