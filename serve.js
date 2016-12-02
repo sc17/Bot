@@ -44,15 +44,9 @@ app.post('/webhook/', function(req, res) {
         }
         
         if (event.message && event.message.text) {
-            text = event.message.text
-
-            var msg = "https://recorridos-y-viajes-a6d8d.firebaseapp.com/"
-            msg += "\n Para pedir un servicio ingresa a esta url y registra tu servicio, "
-            msg += "\n La solicitud inmediatamente se tramita y se da respuesta."
-            msg += "\n Muchas Gracias por escribirnos."
-
-
-            sendTextMessage(sender, msg)
+           sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+           sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
+           sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
         }
     }
     res.sendStatus(200)
