@@ -1,0 +1,5 @@
+ "setting_type":"greeting",
+  "greeting":{
+    "text":"Hola {{user_first_name}}, Bienvenido a Recorridos."
+  }
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=PAGE_ACCESS_TOKEN"    
