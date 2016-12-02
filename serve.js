@@ -80,7 +80,7 @@ function sendTextMessage(sender, text) {
     })
 }
 
- function sendLink(){
+ function sendLink(sender){
 
   messageData = {
         "attachment": {
@@ -130,7 +130,7 @@ function sendTextMessage(sender, text) {
             recipient: {
                 id: sender
             },
-            sender_action : "typing_on",
+             message: messageData,
             notification_type: "REGULAR"
         }
     }, function(error, response, body) {
@@ -155,7 +155,7 @@ function sendAction(sender) {
             recipient: {
                 id: sender
             },
-            message: messageData,
+            sender_action : "typing_on",
             notification_type: "REGULAR"
         }
     }, function(error, response, body) {
