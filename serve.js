@@ -39,6 +39,8 @@ app.post('/webhook/', function(req, res) {
         if (event.postback) {
             text = JSON.stringify(event.postback)
             //text.payload
+             sendLink(sender);
+         
             }
         
         if (event.message && event.message.text) {
