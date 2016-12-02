@@ -43,17 +43,16 @@ app.post('/webhook/', function(req, res) {
             }
         
         if (event.message && event.message.text) {
-           sendAction(sender)
-               sendTextMessage(sender, "Hola. !!! ", token)
-           sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
-           sendLink(sender);
-           sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
-           sendTextMessage(sender,"Muchas Gracias por escribirnos.\nQue tenga un buen día." , token)
-           sendAction(sender)
+          sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para Solicitar nuestros servicios. ", token)
+          sendAction(sender);
+          sendLink(sender);
+          setTimeout(function a(){console.log("tiempo")},2000);
+           sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día.", token)
         }
     }
     res.sendStatus(200)
 })
+
 
 function sendTextMessage(sender, text) {
     messageData = {
@@ -168,3 +167,6 @@ function sendAction(sender) {
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
+
+
+
