@@ -38,7 +38,9 @@ app.post('/webhook/', function(req, res) {
         if (event.postback) {
             text = JSON.stringify(event.postback)
             sendTextMessage(sender, "Hola : "+text , token)
-            sendTextMessage(sender, " Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+            sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
+            sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
+            sendTextMessage(sender,"Muchas Gracias por escribirnos.\n Que tenga un buen día." , token)
         }
         
         if (event.message && event.message.text) {
