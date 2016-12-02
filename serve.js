@@ -43,68 +43,17 @@ app.post('/webhook/', function(req, res) {
             }
         
         if (event.message && event.message.text) {
-
-            var text = "Hola. !!! \nEsta es nuestra página Oficial para solicitar nuestros servicios.\nLa solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día. ";
-            try{
-            messages(sender,text).then(function(result) {
-              console.log(result); //ok
-            }, function(err) {
-              console.log(err); // Error
-            });
-        }catch(err){
-            console.log(err);
-        }
-
-     /*     sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para solicitar nuestros servicios.\nLa solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día. ", token)
+          sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para Solicitar nuestros servicios. ", token)
           sendAction(sender);
-          sendLink(sender);*/
+          sendLink(sender);
+          sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día.", token)
         }
     }
     res.sendStatus(200)
 })
 
 
-function messages(sender,text){
-    try{
-return new Promise(function(resolve,reject){
-
-messageData = {
-        text: text
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: token
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: sender
-            },
-            message: messageData,
-            notification_type: "REGULAR"
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-            reject("error");
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-            reject("error");
-        }else{
-            resolve("ok");
-        }
-    })
-})
-}catch(err){
-    console.log(err);
-}
-
-}
-
-
-function sendTextMessage(sender, text,callback) {
-
+function sendTextMessage(sender, text) {
     messageData = {
         text: text
     }
@@ -124,15 +73,10 @@ function sendTextMessage(sender, text,callback) {
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
-            callback("error");
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
-            callback("error");
-        }else{
-            callback("ok");
         }
     })
-
 }
 
  function sendLink(sender){
@@ -215,4 +159,13 @@ function sendAction(sender) {
         }
     })
 }
+
+
+
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+})
+
+
 
