@@ -45,11 +45,15 @@ app.post('/webhook/', function(req, res) {
         if (event.message && event.message.text) {
 
             var text = "Hola. !!! \nEsta es nuestra página Oficial para solicitar nuestros servicios.\nLa solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día. ";
+            try{
             messages(sender,text).then(function(result) {
               console.log(result); //ok
             }, function(err) {
               console.log(err); // Error
             });
+        }catch(err){
+            console.log(err);
+        }
 
      /*     sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para solicitar nuestros servicios.\nLa solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día. ", token)
           sendAction(sender);
@@ -61,7 +65,7 @@ app.post('/webhook/', function(req, res) {
 
 
 function messages(sender,text){
-
+    try{
 return new Promise(function(resolve,reject){
 
  request({
@@ -85,11 +89,15 @@ return new Promise(function(resolve,reject){
     })
 
 })
+}catch(err){
+    console.log(err);
+}
 
 }
 
 
 function sendTextMessage(sender, text,callback) {
+
     messageData = {
         text: text
     }
@@ -117,6 +125,7 @@ function sendTextMessage(sender, text,callback) {
             callback("ok");
         }
     })
+
 }
 
  function sendLink(sender){
