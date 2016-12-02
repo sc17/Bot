@@ -45,7 +45,7 @@ app.post('/webhook/', function(req, res) {
            sendAction(sender)
                sendTextMessage(sender, "Hola. !!! ", token)
            sendTextMessage(sender, "Esta es nuestra página Oficial para Solicitar nuestros servicios.", token)
-           sendLink();
+           sendLink(sender);
            sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.", token)
            sendTextMessage(sender,"Muchas Gracias por escribirnos.\nQue tenga un buen día." , token)
            sendAction(sender)
@@ -119,19 +119,13 @@ function sendTextMessage(sender, text) {
         }
     }
 
-
-      request({
+     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: token
-        },
+        qs: {access_token:token},
         method: 'POST',
         json: {
-            recipient: {
-                id: sender
-            },
-             message: messageData,
-            notification_type: "REGULAR"
+            recipient: {id:sender},
+            message: messageData,
         }
     }, function(error, response, body) {
         if (error) {
