@@ -27,7 +27,7 @@ app.get('/webhook/', function(req, res) {
     res.send('Error, wrong token')
 })
 
-var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD";
+var token = process.env.PAGE_ACCESS_TOKEN;
 
 
 
