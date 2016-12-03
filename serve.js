@@ -32,50 +32,83 @@ var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53
 
 
 app.post('/webhook/', function(req, res) {
-        messaging_events = req.body.entry[0].messaging
-        for (i = 0; i < messaging_events.length; i++) {
-            event = req.body.entry[0].messaging[i]
-            sender = event.sender.id
-            console.log(event);
-            if (event.postback) {
-                text = JSON.stringify(event.postback)
-                    //text.payload
 
-            }
+    messaging_events = req.body.entry[0].messaging
+    for (i = 0; i < messaging_events.length; i++) {
+        event = req.body.entry[0].messaging[i]
+        sender = event.sender.id
+        console.log(event);
+        if (event.postback) {
+            text = JSON.stringify(event.postback)
+                //text.payload
 
-            if (event.message && event.message.text) {
-                processRequest(sender, 'Hola. !!!', function resp(val) {
-                    if (val = 200) {
-                        sendAction(sender);
-                        setTimeout(function() {
-                            processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios. 🌄🌅⛺🌉🌇 ', function resp(val) {
-                                sendLink(sender);
-                                if (val = 200) {
-                                    sendAction(sender);
-                                    setTimeout(function() {
-                                        processRequest(sender, 'La solicitud inmediatamente se tramita y se da respuesta.', function resp(val) {
-                                            if (val = 200) {
-                                                sendAction(sender);
-                                                setTimeout(function() {
-                                                    processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃😃', function resp(val) {})
-                                                }, 3000);
-                                            }
-                                        })
+        }
 
-                                    }, 2000);
-                                }
-                            })
-                        }, 4000);
+        if (event.message && event.message.text) {
 
-                    }
-                })
+            getNameUser(sender, function resp(val) {
+                obj = JSON.parse(val);
+                if (obj.first_name) {
+                    full_name = obj.first_name + " " + obj.last_name;
+                    processRequest(sender, 'Hola. ' + full_name + ' !!!', function resp(val) {
+                        if (val = 200) {
+                            sendAction(sender);
+                            setTimeout(function() {
+                                processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios. 🌄🌅⛺🌉🌇 ', function resp(val) {
+                                    sendLink(sender);
+                                    if (val = 200) {
+                                        sendAction(sender);
+                                        setTimeout(function() {
+                                            processRequest(sender, 'La solicitud inmediatamente se tramita y se da respuesta.', function resp(val) {
+                                                if (val = 200) {
+                                                    sendAction(sender);
+                                                    setTimeout(function() {
+                                                        processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃😃', function resp(val) {})
+                                                    }, 3000);
+                                                }
+                                            })
+
+                                        }, 2000);
+                                    }
+                                })
+                            }, 4000);
+
+                        }
+                    })
+                }
             })
+
+        }
     }
-}
-res.sendStatus(200)
+    res.sendStatus(200)
 })
 
 
+
+app.get('/test', function(req, res) {
+
+    res.sendStatus(200)
+})
+
+
+function getNameUser(sender, callback) {
+
+    request.get({
+        url: 'https://graph.facebook.com/v2.6/' + sender,
+        qs: {
+            access_token: token
+        }
+    }, function(error, response, body) {
+        if (error) {
+            callback(400)
+        } else if (response.body.error) {
+            callback(400)
+        } else {
+            callback(body);
+        }
+    })
+
+}
 
 function processRequest(sender, text, callback) {
 
@@ -105,6 +138,7 @@ function processRequest(sender, text, callback) {
         }
     })
 }
+
 
 function sendLink(sender) {
 
@@ -189,19 +223,6 @@ function sendAction(sender) {
             console.log('Error: ', response.body.error)
         }
     })
-}
-
-
-// Spin up the server
-app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'))
-})
-if (error) {
-    console.log('Error sending messages: ', error)
-} else if (response.body.error) {
-    console.log('Error: ', response.body.error)
-}
-})
 }
 
 
