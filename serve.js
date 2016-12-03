@@ -18,6 +18,7 @@ app.get('/', function(req, res) {
     res.send('Hello world, I am a chat bot')
 })
 
+
 // for Facebook verification
 app.get('/webhook/', function(req, res) {
     if (req.query['hub.verify_token'] === 'family_is_all') {
@@ -31,29 +32,53 @@ var token = "EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53
 
 
 app.post('/webhook/', function(req, res) {
-    messaging_events = req.body.entry[0].messaging
-    for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i]
-        sender = event.sender.id
-         console.log(event);
-        if (event.postback) {
-            text = JSON.stringify(event.postback)
-            //text.payload
+        messaging_events = req.body.entry[0].messaging
+        for (i = 0; i < messaging_events.length; i++) {
+            event = req.body.entry[0].messaging[i]
+            sender = event.sender.id
+            console.log(event);
+            if (event.postback) {
+                text = JSON.stringify(event.postback)
+                    //text.payload
 
             }
-        
-        if (event.message && event.message.text) {
-          sendTextMessage(sender, "Hola. !!! \nEsta es nuestra página Oficial para Solicitar nuestros servicios. ", token)
-          sendAction(sender);
-          sendLink(sender);
-          sendTextMessage(sender, "La solicitud inmediatamente se tramita y se da respuesta.\nMuchas Gracias por escribirnos.\nQue tenga un buen día.", token)
-        }
+
+            if (event.message && event.message.text) {
+                processRequest(sender, 'Hola. !!!', function resp(val) {
+                    if (val = 200) {
+                        sendAction(sender);
+                        setTimeout(function() {
+                            processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios. 🌄🌅⛺🌉🌇 ', function resp(val) {
+                                sendLink(sender);
+                                if (val = 200) {
+                                    sendAction(sender);
+                                    setTimeout(function() {
+                                        processRequest(sender, 'La solicitud inmediatamente se tramita y se da respuesta.', function resp(val) {
+                                            if (val = 200) {
+                                                sendAction(sender);
+                                                setTimeout(function() {
+                                                    processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃😃', function resp(val) {})
+                                                }, 3000);
+                                            }
+                                        })
+
+                                    }, 2000);
+                                }
+                            })
+                        }, 4000);
+
+                    }
+                })
+            })
     }
-    res.sendStatus(200)
+}
+res.sendStatus(200)
 })
 
 
-function sendTextMessage(sender, text) {
+
+function processRequest(sender, text, callback) {
+
     messageData = {
         text: text
     }
@@ -72,16 +97,18 @@ function sendTextMessage(sender, text) {
         }
     }, function(error, response, body) {
         if (error) {
-            console.log('Error sending messages: ', error)
+            callback(400)
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
+            callback(400)
+        } else {
+            callback(200)
         }
     })
 }
 
- function sendLink(sender){
+function sendLink(sender) {
 
-  messageData = {
+    messageData = {
         "attachment": {
             "type": "template",
             "payload": {
@@ -118,26 +145,6 @@ function sendTextMessage(sender, text) {
         }
     }
 
-     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-
- }
-
-function sendAction(sender) {
-  
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -148,8 +155,32 @@ function sendAction(sender) {
             recipient: {
                 id: sender
             },
-            sender_action : "typing_on",
-            notification_type: "REGULAR"
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+
+}
+
+
+function sendAction(sender) {
+
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: token
+        },
+        method: 'POST',
+        json: {
+            recipient: {
+                id: sender
+            },
+            sender_action: "typing_on"
         }
     }, function(error, response, body) {
         if (error) {
@@ -161,11 +192,20 @@ function sendAction(sender) {
 }
 
 
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+})
+if (error) {
+    console.log('Error sending messages: ', error)
+} else if (response.body.error) {
+    console.log('Error: ', response.body.error)
+}
+})
+}
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
-
-
-
