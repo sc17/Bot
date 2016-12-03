@@ -54,7 +54,7 @@ app.post('/webhook/', function(req, res) {
                         if (val = 200) {
                             sendAction(sender);
                             setTimeout(function() {
-                                processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🌅🌴🌴 🚌 🚌 ', function resp(val) {
+                                processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🌅🌴🌴  🚌  🚌 ', function resp(val) {
                                     sendLink(sender);
                                     if (val = 200) {
                                         sendAction(sender);
@@ -63,7 +63,7 @@ app.post('/webhook/', function(req, res) {
                                                 if (val = 200) {
                                                     sendAction(sender);
                                                     setTimeout(function() {
-                                                        processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃😃', function resp(val) {})
+                                                        processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃', function resp(val) {})
                                                     }, 3000);
                                                 }
                                             })
