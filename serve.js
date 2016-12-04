@@ -39,10 +39,59 @@ app.post('/webhook/', function(req, res) {
         console.log(event);
         if (event.postback) {
 
-            let text = JSON.stringify(event.postback)
-            console.log(text);
+            let text = JSON.parse(JSON.stringify(event.postback))
 
+            switch (text.payload) {
+                case "started":
 
+                    getNameUser(sender, function resp(val) {
+                        obj = JSON.parse(val);
+                        if (obj.first_name) {
+                            full_name = obj.first_name + " " + obj.last_name;
+                            setMessageData(0, 'Hola. ' + full_name + ' !!!');
+                            processRequest(sender, function resp(val) {
+                                if (val = 200) {
+                                    sendAction(sender);
+                                    setTimeout(function() {
+                                        setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
+                                        processRequest(sender, function resp(val) {
+                                            setMessageData(1);
+                                            processRequest(sender);
+                                            if (val = 200) {
+                                                sendAction(sender);
+                                                setTimeout(function() {
+                                                    setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
+                                                    processRequest(sender, function resp(val) {
+                                                        if (val = 200) {
+                                                            sendAction(sender);
+                                                            setTimeout(function() {
+                                                                setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
+                                                                processRequest(sender, function resp(val) {
+                                                                    if (val = 200) {
+                                                                        setMessageData(2);
+                                                                        processRequest(sender);
+                                                                    }
+                                                                })
+                                                            }, 3000);
+                                                        }
+                                                    })
+
+                                                }, 2000);
+                                            }
+                                        })
+                                    }, 4000);
+
+                                }
+                            })
+                        }
+                    })
+
+                    break;
+                default:
+
+            }
+
+            break;
             /*    getNameUser(sender, function resp(val) {
                     obj = JSON.parse(val);
                     if (obj.first_name) {
