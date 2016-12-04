@@ -12,7 +12,7 @@ Button--
   "thread_state":"new_thread",
   "call_to_actions":[
     {
-      "payload":"{{user_first_name}}"
+      "payload":"started"
     }
   ]
 }

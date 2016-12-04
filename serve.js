@@ -2,6 +2,8 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
+var token = process.env.PAGE_ACCESS_TOKEN;
+var messageData;
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -27,9 +29,6 @@ app.get('/webhook/', function(req, res) {
     res.send('Error, wrong token')
 })
 
-var token = process.env.PAGE_ACCESS_TOKEN;
-
-
 
 app.post('/webhook/', function(req, res) {
 
@@ -39,31 +38,39 @@ app.post('/webhook/', function(req, res) {
         sender = event.sender.id
         console.log(event);
         if (event.postback) {
-            text = JSON.stringify(event.postback)
-                //text.payload
 
-        }
+            let text = JSON.stringify(event.postback)
+            console.log(text);
 
-        if (event.message && event.message.text) {
 
             getNameUser(sender, function resp(val) {
                 obj = JSON.parse(val);
                 if (obj.first_name) {
                     full_name = obj.first_name + " " + obj.last_name;
-                    processRequest(sender, 'Hola. ' + full_name + ' !!!', function resp(val) {
+                    setMessageData(0, 'Hola. ' + full_name + ' !!!');
+                    processRequest(sender, function resp(val) {
                         if (val = 200) {
                             sendAction(sender);
                             setTimeout(function() {
-                                processRequest(sender, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🌅🌴🌴  🚌  🚌 ', function resp(val) {
-                                    sendLink(sender);
+                                setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
+                                processRequest(sender, function resp(val) {
+                                    setMessageData(1);
+                                    processRequest(sender);
                                     if (val = 200) {
                                         sendAction(sender);
                                         setTimeout(function() {
-                                            processRequest(sender, 'La solicitud inmediatamente se tramita y se da respuesta.', function resp(val) {
+                                            setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
+                                            processRequest(sender, function resp(val) {
                                                 if (val = 200) {
                                                     sendAction(sender);
                                                     setTimeout(function() {
-                                                        processRequest(sender, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃', function resp(val) {})
+                                                        setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
+                                                        processRequest(sender, , function resp(val) {
+                                                            if (val = 200) {
+                                                                setMessageData(2);
+                                                                processRequest(sender);
+                                                            }
+                                                        })
                                                     }, 3000);
                                                 }
                                             })
@@ -77,6 +84,11 @@ app.post('/webhook/', function(req, res) {
                     })
                 }
             })
+        }
+
+        if (event.message && event.message.text) {
+
+
 
         }
     }
@@ -85,7 +97,114 @@ app.post('/webhook/', function(req, res) {
 
 
 
+function setMessageData(val, text) {
+
+    switch (val) {
+        case 0:
+            messageData = {
+                text: text
+            }
+            break;
+
+        case 1:
+
+            messageData = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Pedir servicio",
+                            "subtitle": "mensaje 1 ----- #",
+                            "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": "https://www.messenger.com",
+                                "title": "Abrir Página"
+                            }],
+                        }, {
+                            "title": "Catálogo de Servicios",
+                            "subtitle": "mensaje 2 ----- #",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": "https://www.messenger.com",
+                                "title": "Abrir Página"
+                            }],
+                        }, {
+                            "title": "Contáctanos",
+                            "subtitle": "mensaje 3 ----- #",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": "https://www.messenger.com",
+                                "title": "Abrir Página"
+                            }],
+                        }]
+                    }
+                }
+            }
+
+            break;
+
+        case 2:
+            messageData = {
+                "text": "Tienes dudas ❔❔❔",
+                "quick_replies": [{
+                    "content_type": "text",
+                    "title": "Si",
+                    "payload": "dudas_si"
+                }, {
+                    "content_type": "text",
+                    "title": "No",
+                    "payload": "dudas_no"
+                }]
+            }
+
+            break;
+
+    }
+}
+
+
 app.get('/test', function(req, res) {
+    sender = "1141060232679322";
+    messageData = {
+        "text": "Tienes dudas ❔❔❔",
+        "quick_replies": [{
+            "content_type": "text",
+            "title": "Si",
+            "payload": "dudas_si"
+        }, {
+            "content_type": "text",
+            "title": "No",
+            "payload": "dudas_no"
+        }]
+    }
+
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
+        },
+        method: 'POST',
+        json: {
+            recipient: {
+                id: sender
+            },
+            message: messageData,
+            notification_type: "REGULAR"
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log(error);
+        } else if (response.body.error) {
+            console.log(error);
+        } else {
+            console.log(error);
+        }
+    })
+
 
     res.sendStatus(200)
 })
@@ -110,11 +229,9 @@ function getNameUser(sender, callback) {
 
 }
 
-function processRequest(sender, text, callback) {
+function processRequest(sender, callback) {
 
-    messageData = {
-        text: text
-    }
+
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -139,69 +256,6 @@ function processRequest(sender, text, callback) {
     })
 }
 
-
-function sendLink(sender) {
-
-    messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Pedir servicio",
-                    "subtitle": "mensaje 1 ----- #",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "Abrir Página"
-                    }],
-                }, {
-                    "title": "Catálogo de Servicios",
-                    "subtitle": "mensaje 2 ----- #",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "Abrir Página"
-                    }],
-                }, {
-                    "title": "Contáctanos",
-                    "subtitle": "mensaje 3 ----- #",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "Abrir Página"
-                    }],
-                }]
-            }
-        }
-    }
-
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: token
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: sender
-            },
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-
-}
-
-
 function sendAction(sender) {
 
     request({
@@ -223,6 +277,26 @@ function sendAction(sender) {
             console.log('Error: ', response.body.error)
         }
     })
+}
+
+
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+})
+recipient: {
+        id: sender
+    },
+    sender_action: "typing_on"
+}
+},
+function(error, response, body) {
+    if (error) {
+        console.log('Error sending messages: ', error)
+    } else if (response.body.error) {
+        console.log('Error: ', response.body.error)
+    }
+})
 }
 
 
