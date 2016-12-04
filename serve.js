@@ -285,23 +285,3 @@ function sendAction(sender) {
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
-recipient: {
-        id: sender
-    },
-    sender_action: "typing_on"
-}
-},
-function(error, response, body) {
-    if (error) {
-        console.log('Error sending messages: ', error)
-    } else if (response.body.error) {
-        console.log('Error: ', response.body.error)
-    }
-})
-}
-
-
-// Spin up the server
-app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'))
-})
