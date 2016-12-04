@@ -4,6 +4,7 @@ var request = require('request')
 var app = express()
 var token = process.env.PAGE_ACCESS_TOKEN;
 var messageData;
+//var token = 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -47,6 +48,7 @@ app.post('/webhook/', function(req, res) {
                         obj = JSON.parse(val);
                         if (obj.first_name) {
                             full_name = obj.first_name + " " + obj.last_name;
+                            console.log(full_name);
                             setMessageData(0, 'Hola. ' + full_name + ' !!!');
                             processRequest(sender, function resp(val) {
                                 if (val = 200) {
@@ -69,7 +71,7 @@ app.post('/webhook/', function(req, res) {
                                                                         processRequest(sender, function resp(val) {
                                                                             if (val = 200) {
                                                                                 setMessageData(2);
-                                                                                processRequest(sender);
+                                                                                processRequest(sender, function resp(val) {});
                                                                             }
                                                                         })
                                                                     }, 3000);
@@ -87,6 +89,7 @@ app.post('/webhook/', function(req, res) {
                             })
                         }
                     })
+
 
                     break;
                 case "dudas_si":
@@ -288,42 +291,52 @@ function setMessageData(val, text) {
 
 app.get('/test', function(req, res) {
     sender = "1141060232679322";
-    messageData = {
-        "text": "Tienes dudas ❔❔❔",
-        "quick_replies": [{
-            "content_type": "text",
-            "title": "Si",
-            "payload": "dudas_si"
-        }, {
-            "content_type": "text",
-            "title": "No",
-            "payload": "dudas_no"
-        }]
-    }
 
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: sender
-            },
-            message: messageData,
-            notification_type: "REGULAR"
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log(error);
-        } else if (response.body.error) {
-            console.log(error);
-        } else {
-            console.log(error);
+    getNameUser(sender, function resp(val) {
+        obj = JSON.parse('{"first_name":"Sebastian","last_name":"Chalarca"}');
+        if (obj.first_name) {
+            full_name = obj.first_name + " " + obj.last_name;
+            console.log(full_name);
+            setMessageData(0, 'Hola. ' + full_name + ' !!!');
+            processRequest(sender, function resp(val) {
+                if (val = 200) {
+                    sendAction(sender);
+                    setTimeout(function() {
+                        setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
+                        processRequest(sender, function resp(val) {
+                            setMessageData(1);
+                            if (val = 200) {
+                                sendAction(sender);
+                                processRequest(sender, function resp(val) {
+                                    if (val = 200) {
+                                        setTimeout(function() {
+                                            setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
+                                            processRequest(sender, function resp(val) {
+                                                if (val = 200) {
+                                                    sendAction(sender);
+                                                    setTimeout(function() {
+                                                        setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
+                                                        processRequest(sender, function resp(val) {
+                                                            if (val = 200) {
+                                                                setMessageData(2);
+                                                                processRequest(sender, function resp(val) {});
+                                                            }
+                                                        })
+                                                    }, 3000);
+                                                }
+                                            })
+
+                                        }, 2000);
+                                    }
+                                })
+                            }
+                        })
+                    }, 4000);
+
+                }
+            })
         }
     })
-
 
     res.sendStatus(200)
 })
@@ -396,6 +409,15 @@ function sendAction(sender) {
             console.log('Error: ', response.body.error)
         }
     })
+}
+
+
+// Spin up the server
+app.listen(app.get('port'), function() {
+console.log('running on port', app.get('port'))
+}), response.body.error)
+}
+})
 }
 
 
