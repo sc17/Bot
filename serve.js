@@ -37,7 +37,6 @@ app.post('/webhook/', function(req, res) {
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
-        console.log(event);
         if (event.postback) {
 
             let text = JSON.parse(JSON.stringify(event.postback))
@@ -91,19 +90,18 @@ app.post('/webhook/', function(req, res) {
                     })
 
                     break;
+
                 case "dudas_si":
                     setMessageData(3);
-                    processRequest(sender, function resp(val) {})
+                    processRequest(sender, function resp(val) {});
                     break;
 
                 case "dudas_no":
                     setMessageData(0, 'Es un gusto ayudarle');
-                    processRequest(sender, function resp(val) {})
+                    processRequest(sender, function resp(val) {});
                     break;
 
             }
-
-            break;
 
         }
 
@@ -186,102 +184,66 @@ function setMessageData(val, text) {
         case 3:
 
             messageData = {
-                "recipient": {
-                    "id": "RECIPIENT_ID"
-                },
-                "message": {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "list",
-                            "elements": [{
-                                "title": "Classic T-Shirt Collection",
-                                "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
-                                "subtitle": "See all our colors",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                },
-                                "buttons": [{
-                                    "title": "View",
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/collection",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                }]
-                            }, {
-                                "title": "Classic White T-Shirt",
-                                "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-                                "subtitle": "100% Cotton, 200% Comfortable",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                },
-                                "buttons": [{
-                                    "title": "Shop Now",
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                }]
-                            }, {
-                                "title": "Classic Blue T-Shirt",
-                                "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
-                                "subtitle": "100% Cotton, 200% Comfortable",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                },
-                                "buttons": [{
-                                    "title": "Shop Now",
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                }]
-                            }, {
-                                "title": "Classic Black T-Shirt",
-                                "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
-                                "subtitle": "100% Cotton, 200% Comfortable",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                },
-                                "buttons": [{
-                                    "title": "Shop Now",
-                                    "type": "web_url",
-                                    "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
-                                    "messenger_extensions": true,
-                                    "webview_height_ratio": "tall",
-                                    "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                                }]
-                            }],
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+                        "elements": [{
+                            "title": "Recorridos y Viajes",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "subtitle": "Confort - Calidad - Seguridad",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "http://messengerdemo.parseapp.com/img/gearvr.png"
+                            },
                             "buttons": [{
-                                "title": "View More",
-                                "type": "postback",
-                                "payload": "payload"
+                                "title": "Ver",
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/collection"
                             }]
-                        }
+                        }, {
+                            "title": "Pide Un Servicio",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "subtitle": "mira nuestro catálogo de servicios",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/view?item=100"
+                            },
+                            "buttons": [{
+                                "title": "Pedír Ahora",
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100"
+                            }]
+                        }, {
+                            "title": "Teléfonos de contacto",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "subtitle": "contáctate con nosotros",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/view?item=101"
+                            },
+                            "buttons": [{
+                                "title": "teléfonos",
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101"
+                            }]
+                        }, {
+                            "title": "¿Como Funciona El Servicio?",
+                            "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                            "subtitle": "Comprende como trabaja esta plataforma",
+                            "default_action": {
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/view?item=102"
+                            },
+                            "buttons": [{
+                                "title": "Ayúdame",
+                                "type": "web_url",
+                                "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102"
+                            }]
+                        }]
                     }
                 }
-
             }
-
             break;
 
     }
@@ -289,54 +251,14 @@ function setMessageData(val, text) {
 
 
 app.get('/test', function(req, res) {
-    /*    sender = "1141060232679322";
+    sender = "1141060232679322";
 
-        getNameUser(sender, function resp(val) {
-            obj = JSON.parse('{"first_name":"Sebastian","last_name":"Chalarca"}');
-            if (obj.first_name) {
-                full_name = obj.first_name + " " + obj.last_name;
-                console.log(full_name);
-                setMessageData(0, 'Hola. ' + full_name + ' !!!');
-                processRequest(sender, function resp(val) {
-                    if (val = 200) {
-                        sendAction(sender);
-                        setTimeout(function() {
-                            setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
-                            processRequest(sender, function resp(val) {
-                                setMessageData(1);
-                                if (val = 200) {
-                                    sendAction(sender);
-                                    processRequest(sender, function resp(val) {
-                                        if (val = 200) {
-                                            setTimeout(function() {
-                                                setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
-                                                processRequest(sender, function resp(val) {
-                                                    if (val = 200) {
-                                                        sendAction(sender);
-                                                        setTimeout(function() {
-                                                            setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
-                                                            processRequest(sender, function resp(val) {
-                                                                if (val = 200) {
-                                                                    setMessageData(2);
-                                                                    processRequest(sender, function resp(val) {});
-                                                                }
-                                                            })
-                                                        }, 3000);
-                                                    }
-                                                })
+    setMessageData(3);
+    console.log(messageData);
+    processRequest(sender, function resp(val) {
+        console.log(val);
+    })
 
-                                            }, 2000);
-                                        }
-                                    })
-                                }
-                            })
-                        }, 4000);
-
-                    }
-                })
-            }
-        })
-    */
     res.sendStatus(200)
 })
 
@@ -378,8 +300,10 @@ function processRequest(sender, callback) {
         }
     }, function(error, response, body) {
         if (error) {
+            console.log(error);
             callback(400)
         } else if (response.body.error) {
+            console.log(error);
             callback(400)
         } else {
             callback(200)
