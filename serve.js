@@ -95,8 +95,10 @@ app.post('/webhook/', function(req, res) {
         }
 
         if (event.message && event.message.text) {
-            console.log(event.message.text);
-            if (event.message.quick_reply !== 'undefined') {
+            console.log('no');
+            console.log(event.message);
+            if (typeof event.message.quick_reply !== 'undefined') {
+                console.log('payloDDD');
                 switch (event.message.quick_reply.payload) {
                     case "dudas_si":
                         setMessageData(3);
@@ -110,6 +112,7 @@ app.post('/webhook/', function(req, res) {
 
                 }
             } else {
+                console.log('ELSE');
                 getNameUser(sender, function resp(val) {
                     obj = JSON.parse(val);
                     if (obj.first_name) {
