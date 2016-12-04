@@ -37,6 +37,7 @@ app.post('/webhook/', function(req, res) {
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
+        console.log(event.postback);
         if (event.postback) {
 
             let text = JSON.parse(JSON.stringify(event.postback))
