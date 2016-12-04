@@ -90,7 +90,6 @@ app.post('/webhook/', function(req, res) {
                         }
                     })
 
-
                     break;
                 case "dudas_si":
                     setMessageData(3);
@@ -290,54 +289,54 @@ function setMessageData(val, text) {
 
 
 app.get('/test', function(req, res) {
-    sender = "1141060232679322";
+    /*    sender = "1141060232679322";
 
-    getNameUser(sender, function resp(val) {
-        obj = JSON.parse('{"first_name":"Sebastian","last_name":"Chalarca"}');
-        if (obj.first_name) {
-            full_name = obj.first_name + " " + obj.last_name;
-            console.log(full_name);
-            setMessageData(0, 'Hola. ' + full_name + ' !!!');
-            processRequest(sender, function resp(val) {
-                if (val = 200) {
-                    sendAction(sender);
-                    setTimeout(function() {
-                        setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
-                        processRequest(sender, function resp(val) {
-                            setMessageData(1);
-                            if (val = 200) {
-                                sendAction(sender);
-                                processRequest(sender, function resp(val) {
-                                    if (val = 200) {
-                                        setTimeout(function() {
-                                            setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
-                                            processRequest(sender, function resp(val) {
-                                                if (val = 200) {
-                                                    sendAction(sender);
-                                                    setTimeout(function() {
-                                                        setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
-                                                        processRequest(sender, function resp(val) {
-                                                            if (val = 200) {
-                                                                setMessageData(2);
-                                                                processRequest(sender, function resp(val) {});
-                                                            }
-                                                        })
-                                                    }, 3000);
-                                                }
-                                            })
+        getNameUser(sender, function resp(val) {
+            obj = JSON.parse('{"first_name":"Sebastian","last_name":"Chalarca"}');
+            if (obj.first_name) {
+                full_name = obj.first_name + " " + obj.last_name;
+                console.log(full_name);
+                setMessageData(0, 'Hola. ' + full_name + ' !!!');
+                processRequest(sender, function resp(val) {
+                    if (val = 200) {
+                        sendAction(sender);
+                        setTimeout(function() {
+                            setMessageData(0, 'Esta es nuestra página Oficial para solicitar nuestros servicios.🌴🌴🏰🌴🌴  🚌  🚌 ');
+                            processRequest(sender, function resp(val) {
+                                setMessageData(1);
+                                if (val = 200) {
+                                    sendAction(sender);
+                                    processRequest(sender, function resp(val) {
+                                        if (val = 200) {
+                                            setTimeout(function() {
+                                                setMessageData(0, 'La solicitud inmediatamente se tramita y se da respuesta.');
+                                                processRequest(sender, function resp(val) {
+                                                    if (val = 200) {
+                                                        sendAction(sender);
+                                                        setTimeout(function() {
+                                                            setMessageData(0, 'Muchas Gracias por escribirnos.\nQue tenga un buen día. 😃 😃');
+                                                            processRequest(sender, function resp(val) {
+                                                                if (val = 200) {
+                                                                    setMessageData(2);
+                                                                    processRequest(sender, function resp(val) {});
+                                                                }
+                                                            })
+                                                        }, 3000);
+                                                    }
+                                                })
 
-                                        }, 2000);
-                                    }
-                                })
-                            }
-                        })
-                    }, 4000);
+                                            }, 2000);
+                                        }
+                                    })
+                                }
+                            })
+                        }, 4000);
 
-                }
-            })
-        }
-    })
-
+                    }
+                })
+            }
+        })
+    */
     res.sendStatus(200)
 })
 
@@ -409,15 +408,6 @@ function sendAction(sender) {
             console.log('Error: ', response.body.error)
         }
     })
-}
-
-
-// Spin up the server
-app.listen(app.get('port'), function() {
-console.log('running on port', app.get('port'))
-}), response.body.error)
-}
-})
 }
 
 
