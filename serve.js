@@ -90,23 +90,24 @@ app.post('/webhook/', function(req, res) {
                     })
 
                     break;
-
-                case "dudas_si":
-                    setMessageData(3);
-                    processRequest(sender, function resp(val) {});
-                    break;
-
-                case "dudas_no":
-                    setMessageData(0, 'Es un gusto ayudarle');
-                    processRequest(sender, function resp(val) {});
-                    break;
-
             }
 
         }
 
         if (event.message && event.message.text) {
-            console.log(event.message.text);
+            if (event.message.quick_reply.payload) {
+                switch (event.message.quick_reply.payload) {
+                    case "dudas_si":
+                        setMessageData(3);
+                        processRequest(sender, function resp(val) {});
+                        break;
+
+                    case "dudas_no":
+                        setMessageData(0, 'Es un gusto ayudarle');
+                        processRequest(sender, function resp(val) {});
+                        break;
+                }
+            }
 
 
         }
