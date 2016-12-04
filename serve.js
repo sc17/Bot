@@ -2,9 +2,9 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
-var token = process.env.PAGE_ACCESS_TOKEN;
+    //var token = process.env.PAGE_ACCESS_TOKEN;
 var messageData;
-//var token = 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
+var token = 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -82,7 +82,7 @@ app.post('/webhook/', function(req, res) {
                                                 })
                                             }
                                         })
-                                    }, 4000);
+                                    }, 4500);
 
                                 }
                             })
@@ -106,7 +106,45 @@ app.post('/webhook/', function(req, res) {
                         setMessageData(0, 'Es un gusto ayudarle');
                         processRequest(sender, function resp(val) {});
                         break;
+
                 }
+            } else {
+                getNameUser(sender, function resp(val) {
+                    obj = JSON.parse(val);
+                    if (obj.first_name) {
+                        full_name = obj.first_name + " " + obj.last_name;
+                        setMessageData(0, 'Hola. Nuevamente ' + full_name + ' 😃 ');
+                        processRequest(sender, function resp(val) {
+                            if (val == 200) {
+                                sendAction(sender);
+                                setMessageData(0, 'Esperamos que te encuentres bien..');
+                                setTimeout(function() {
+                                    processRequest(sender, function resp(val) {
+                                        if (val == 200) {
+                                            setMessageData(0, 'Esta es nuestra lista de acciones que puedes hacer ahora: ');
+                                            processRequest(sender, function resp(val) {
+                                                if (val == 200) {
+                                                    sendAction(sender);
+                                                    setMessageData(3);
+                                                    setTimeout(function() {
+                                                        processRequest(sender, function resp(val) {
+                                                            if (val == 200) {
+                                                                setMessageData(0, 'En el menú ⬅👀 tienes las mismas opciones.\nCon gusto atenderlo.');
+                                                                processRequest(sender, function resp(val) {});
+                                                            }
+                                                        })
+                                                    }, 4500);
+                                                }
+
+                                            });
+                                        }
+
+                                    })
+                                }, 3500);
+                            }
+                        })
+                    }
+                })
             }
 
 
@@ -254,11 +292,7 @@ function setMessageData(val, text) {
 app.get('/test', function(req, res) {
     sender = "1141060232679322";
 
-    setMessageData(3);
-    console.log(messageData);
-    processRequest(sender, function resp(val) {
-        console.log(val);
-    })
+    sendAction(sender);
 
     res.sendStatus(200)
 })
