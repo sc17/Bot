@@ -95,7 +95,8 @@ app.post('/webhook/', function(req, res) {
         }
 
         if (event.message && event.message.text) {
-            if (event.message.quick_reply.payload) {
+            console.log(event.message.text);
+            if (event.message.quick_reply.payload !== 'undefined') {
                 switch (event.message.quick_reply.payload) {
                     case "dudas_si":
                         setMessageData(3);
