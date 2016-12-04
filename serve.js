@@ -40,14 +40,13 @@ app.post('/webhook/', function(req, res) {
         if (event.postback) {
 
             let text = JSON.parse(JSON.stringify(event.postback))
-
+            console.log(text);
             switch (text.payload) {
                 case "started":
                     getNameUser(sender, function resp(val) {
                         obj = JSON.parse(val);
                         if (obj.first_name) {
                             full_name = obj.first_name + " " + obj.last_name;
-                            console.log(full_name);
                             setMessageData(0, 'Hola. ' + full_name + ' !!!');
                             processRequest(sender, function resp(val) {
                                 if (val = 200) {
