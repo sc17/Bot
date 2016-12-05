@@ -2,9 +2,8 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
-    //var token = process.env.PAGE_ACCESS_TOKEN;
+var token = process.env.PAGE_ACCESS_TOKEN;
 var messageData;
-var token = 'EAAFS7ZCIi6rkBACZCYnF4WsP9xeXNDternP1RGmqJ94DaTfDK05PthMKgu3zWX3t53R3qV3J4S21ZCDKg13jPwJpMg7ZC7SZC4eHr0Lg1zizWZBhGQkvCZCTqTzsPeJQnc4A8nkQIWRbT7XnWO3B1DOScMYaSTZBRJEx4v4FGrC47QZDZD'
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -291,15 +290,6 @@ function setMessageData(val, text) {
 
     }
 }
-
-
-app.get('/test', function(req, res) {
-    sender = "1141060232679322";
-
-    sendAction(sender);
-
-    res.sendStatus(200)
-})
 
 
 function getNameUser(sender, callback) {
